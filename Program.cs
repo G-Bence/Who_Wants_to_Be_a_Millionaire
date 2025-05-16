@@ -1,23 +1,38 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 
 namespace Who_Wants_to_Be_a_Millionaire
 {
     internal class Program
     {
+        static StreamReader streamReader;
         static void Main(string[] args)
         {
-            PrintOption("Hello in Blue", ConsoleColor.Blue);
-            PrintOption("Hello in Green", ConsoleColor.Green);
-            PrintOption("Hello in Red", ConsoleColor.Red);
+            string filePath = "C:\\Users\\Bence\\Desktop\\Iskola\\Programozás alap\\2024-25-ös tanév (C#)\\Who_Wants_to_Be_a_Millionaire\\Questions.txt";
 
-            WinnerOption("Winner in Blue");
+            if (File.Exists(filePath))
+            {
+                // Read all the content in one string
+                // and display the string
+                streamReader = new StreamReader(filePath);
+                string line;
+
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    Question question = new Question();
+                    question.StringToClass(line);
+                }
+
+                streamReader.Close();
+            }
 
 
             Console.ReadLine();
         }
 
 
+        /*
         static void PrintOption(string option, ConsoleColor color)
         {
             string border = new string('-', 30);
@@ -34,8 +49,7 @@ namespace Who_Wants_to_Be_a_Millionaire
         static void WinnerOption(string option)
         {
             int sequence = 7;
-            string border = new string('-', 30);
-            int space = (border.Length - 3);
+
             ConsoleColor color;
             for (int i = 0; i < sequence; i++)
             {
@@ -47,13 +61,8 @@ namespace Who_Wants_to_Be_a_Millionaire
                 {
                     color = ConsoleColor.Blue;
                 }
-                Console.WriteLine(border);
-                Console.Write("|");
-                Console.BackgroundColor = color;
-                Console.Write($" {option.PadRight(space, ' ')}");
-                Console.ResetColor();
-                Console.Write("|\n");
-                Console.WriteLine(border);
+
+                PrintOption(option, color);
 
                 Thread.Sleep(300);
 
@@ -65,6 +74,6 @@ namespace Who_Wants_to_Be_a_Millionaire
                 }
 
             }
-        }
+        }*/
     }
 }
