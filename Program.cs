@@ -55,7 +55,7 @@ namespace Who_Wants_to_Be_a_Millionaire
                 Console.Write("|\n");
                 Console.WriteLine(border);
 
-                Thread.Sleep(250);
+                Thread.Sleep(300);
 
                 if (i < (sequence-1))
                 {
