@@ -7,73 +7,73 @@ namespace Who_Wants_to_Be_a_Millionaire
     internal class Program
     {
         static StreamReader streamReader;
+        static All_The_Questions allQuestions;
+        static Question question;
+        //static List<Question>[] questionList = new List<Question>[11];
         static void Main(string[] args)
         {
-            string filePath = "C:\\Users\\Bence\\Desktop\\Iskola\\Programozás alap\\2024-25-ös tanév (C#)\\Who_Wants_to_Be_a_Millionaire\\Questions.txt";
+            int index = 0;
+            allQuestions = new All_The_Questions();
+            string filePath = "C:\\Users\\Bence\\Desktop\\Iskola\\Programozás alap\\2024-25-ös tanév (C#)\\Who_Wants_to_Be_a_Millionaire\\kerdes.txt";
 
             if (File.Exists(filePath))
             {
-                // Read all the content in one string
-                // and display the string
+                //FILE READING
                 streamReader = new StreamReader(filePath);
                 string line;
 
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    Question question = new Question();
-                    question.StringToClass(line);
+                    question = new Question(line);
+
+                    Console.WriteLine(question.QuestionLevel);
+
+                    if (question != null)
+                    {
+                        allQuestions.AddQuestion(question);
+                        index++;
+                    }
                 }
 
                 streamReader.Close();
-            }
+                Console.WriteLine(allQuestions.QuestionsByLevels[0]);
 
+
+                //Array Check
+                for (int i = 0; i < 11; i++)
+                {
+                    Console.WriteLine($"Index: {i}");
+                    if (allQuestions.QuestionsByLevels[i] == null)
+                    {
+                        Console.WriteLine("null");
+                    }
+                    else if (allQuestions.QuestionsByLevels[i].Count == 0)
+                    {
+                        Console.WriteLine("empty list");
+                    }
+                    else
+                    {
+                        Console.WriteLine(allQuestions.QuestionsByLevels[i]);
+                        Console.WriteLine(allQuestions.QuestionsByLevels[i].Count);
+                        /*
+                        for (int j = 0; j < allQuestions.QuestionsByLevels[i].Count; j++)
+                        {
+                            Console.WriteLine(allQuestions.QuestionsByLevels[i][j].QuestionText);
+                            Console.WriteLine(allQuestions.QuestionsByLevels[i][j].CorrectAnswer);
+                            Console.WriteLine(allQuestions.QuestionsByLevels[i][j].Options[0]);
+                            Console.WriteLine(allQuestions.QuestionsByLevels[i][j].Options[1]);
+                            Console.WriteLine(allQuestions.QuestionsByLevels[i][j].Options[2]);
+                            Console.WriteLine(allQuestions.QuestionsByLevels[i][j].Options[3]);
+                        }*/
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("File not found.");
+            }
 
             Console.ReadLine();
         }
-
-
-        /*
-        static void PrintOption(string option, ConsoleColor color)
-        {
-            string border = new string('-', 30);
-            int space = (border.Length - 3);
-            Console.WriteLine(border);
-            Console.Write("|");
-            Console.BackgroundColor = color;
-            Console.Write($" {option.PadRight(space, ' ')}");
-            Console.ResetColor();
-            Console.Write("|\n");
-            Console.WriteLine(border);
-        }
-
-        static void WinnerOption(string option)
-        {
-            int sequence = 7;
-
-            ConsoleColor color;
-            for (int i = 0; i < sequence; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    color = ConsoleColor.Green;
-                }
-                else
-                {
-                    color = ConsoleColor.Blue;
-                }
-
-                PrintOption(option, color);
-
-                Thread.Sleep(300);
-
-                if (i < (sequence-1))
-                {
-                    Console.SetCursorPosition(0, Console.CursorTop - 2);
-                    Console.Write(new string(' ', Console.BufferWidth));
-                    Console.SetCursorPosition(0, Console.CursorTop - 1);
-                }
-
-            }
-        }*/
     }
 }

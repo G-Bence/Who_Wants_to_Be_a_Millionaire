@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,47 +11,68 @@ namespace Who_Wants_to_Be_a_Millionaire
     {
         private int questionLevel;
         private string questionText;
-        private List<string> options;
+        private List<string> options = new List<string>();
         private string correctAnswer;
 
         public Question(string line)
         {
-            string[] parts = line.Split(';');
-
             //It would better for check if the first element could be converted to int
 
-            if (parts.Length <= 7)
+            if(line == null || line.Length == 0)
             {
-                questionLevel = 0;
-                questionText = parts[0];
-                for (int i = 1; i <= 4; i++)
-                {
-                    options.Add(parts[i]);
-                }
-                correctAnswer = parts[5];
+                throw new ArgumentException("Line cannot be empty");
             }
             else
             {
-                questionLevel = int.Parse(parts[0]);
-                questionText = parts[1];
-                for (int i = 2; i <= 5; i++)
+                string[] parts = line.Split(';');
+
+                if (parts.Length <= 7)
                 {
-                    options.Add(parts[i]);
+                    this.questionLevel = 0;
+                    this.questionText = parts[0];
+                    for (int i = 1; i < 5; i++)
+                    {
+                        if (parts[i] != null && parts[i].Length != 0)
+                        {
+                            this.options.Add(parts[i]);
+                        }
+                    }
+                    this.correctAnswer = parts[5];
                 }
-                correctAnswer = parts[6];
+                else
+                {
+                    this.questionLevel = int.Parse(parts[0]);
+                    this.questionText = parts[1];
+                    for (int i = 2; i < 6; i++)
+                    {
+                        if (parts[i] != null && parts[i].Length != 0)
+                        {
+                            this.options.Add(parts[i]);
+                        }
+
+                    }
+                    this.correctAnswer = parts[6];
+                }
+                /*
+                Console.WriteLine(questionLevel);
+                Console.WriteLine(questionText);
+                for (int i = 0; i < options.Count; i++)
+                {
+                    Console.WriteLine(options[i]);
+                }
+                Console.WriteLine(correctAnswer);
+                */
             }
-            //string questionText, List<string> options, string correctAnswer
-            /* this.questionText = questionText;
-             this.options = options;
-             this.correctAnswer = correctAnswer;*/
         }
 
-        public int QuestionLevel { get; set; }
-        public string QuestionText { get; set; }
-        public List<string> Options { get; set; }
-        public List<string> CorrectAnswer { get; set; }
+        
+        public int QuestionLevel { get => questionLevel; set => questionLevel = value; }
+        public string QuestionText { get => questionText; set => questionText = value; }
+        public List<string> Options { get => options; set => options = value; }
+        public string CorrectAnswer { get => correctAnswer; set => correctAnswer = value; }
 
 
+        
         private static void PrintOption(string option, ConsoleColor color)
         {
             string border = new string('-', 30);
@@ -95,43 +117,12 @@ namespace Who_Wants_to_Be_a_Millionaire
             }
         }
 
-        //WinnerOption (?)
-        //Make the "All the Questions" class to the innheritance of the Question class (?)
-
         public void DisplayQuestion()
         {
             Console.WriteLine(questionText);
             for (int i = 0; i < options.Count; i++)
             {
                    PrintOption(options[i], ConsoleColor.Blue);
-            }
-        }
-
-        public void StringToClass(string line)
-        {
-            string[] parts = line.Split(';');
-
-            //It would better for check if the first element could be converted to int
-
-            if (parts.Length <= 7)
-            {
-                questionLevel = 0;
-                questionText = parts[0];
-                for(int i = 1; i <=4; i++)
-                {
-                    options.Add(parts[i]);
-                }
-                correctAnswer = parts[5];
-            }
-            else
-            {
-                questionLevel = int.Parse(parts[0]);
-                questionText = parts[1];
-                for (int i = 2; i <= 5; i++)
-                {
-                    options.Add(parts[i]);
-                }
-                correctAnswer = parts[6];
             }
         }
     }
