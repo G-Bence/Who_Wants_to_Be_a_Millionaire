@@ -14,6 +14,14 @@ namespace Who_Wants_to_Be_a_Millionaire
         private List<string> options = new List<string>();
         private string correctAnswer;
 
+        private Dictionary<int, char> keyValuePairs = new Dictionary<int, char>()
+        {
+            { 0, 'A' },
+            { 1, 'B' },
+            { 2, 'C' },
+            { 3, 'D' }
+        };
+
         public Question(string line)
         {
             //It would better for check if the first element could be converted to int
@@ -28,30 +36,30 @@ namespace Who_Wants_to_Be_a_Millionaire
 
                 if (parts.Length <= 7)
                 {
-                    this.questionLevel = 0;
-                    this.questionText = parts[0];
+                    questionLevel = 0;
+                    questionText = parts[0];
                     for (int i = 1; i < 5; i++)
                     {
                         if (parts[i] != null && parts[i].Length != 0)
                         {
-                            this.options.Add(parts[i]);
+                            options.Add(parts[i]);
                         }
                     }
-                    this.correctAnswer = parts[5];
+                    correctAnswer = parts[5];
                 }
                 else
                 {
-                    this.questionLevel = int.Parse(parts[0]);
-                    this.questionText = parts[1];
+                    questionLevel = int.Parse(parts[0]);
+                    questionText = parts[1];
                     for (int i = 2; i < 6; i++)
                     {
                         if (parts[i] != null && parts[i].Length != 0)
                         {
-                            this.options.Add(parts[i]);
+                            options.Add(parts[i]);
                         }
 
                     }
-                    this.correctAnswer = parts[6];
+                    correctAnswer = parts[6];
                 }
                 /*
                 Console.WriteLine(questionLevel);
@@ -73,21 +81,21 @@ namespace Who_Wants_to_Be_a_Millionaire
 
 
         
-        private static void PrintOption(string option, ConsoleColor color)
+        private static void PrintOption(char letter, string option, ConsoleColor color)
         {
             string border = new string('-', 30);
-            int space = (border.Length - 3);
+            int space = (border.Length - 6);
             Console.WriteLine(border);
             Console.Write("|");
             Console.BackgroundColor = color;
-            Console.Write($" {option.PadRight(space, ' ')}");
+            Console.Write($" {letter}: {option.PadRight(space, ' ')}");
             Console.ResetColor();
             Console.Write("|\n");
             Console.WriteLine(border);
         }
 
 
-        static void WinnerOption(string option)
+        static void WinnerOption(char letter, string option)
         {
             int sequence = 7;
 
@@ -103,7 +111,7 @@ namespace Who_Wants_to_Be_a_Millionaire
                     color = ConsoleColor.Blue;
                 }
 
-                PrintOption(option, color);
+                PrintOption(letter, option, color);
 
                 Thread.Sleep(300);
 
@@ -113,7 +121,6 @@ namespace Who_Wants_to_Be_a_Millionaire
                     Console.Write(new string(' ', Console.BufferWidth));
                     Console.SetCursorPosition(0, Console.CursorTop - 1);
                 }
-
             }
         }
 
@@ -122,7 +129,14 @@ namespace Who_Wants_to_Be_a_Millionaire
             Console.WriteLine(questionText);
             for (int i = 0; i < options.Count; i++)
             {
-                   PrintOption(options[i], ConsoleColor.Blue);
+                if(options[i].Length > 0 && options[i] != null)
+                {
+                    PrintOption(keyValuePairs[i], options[i], ConsoleColor.Blue);
+                }
+                else
+                {
+                    Console.WriteLine("\n\n");
+                }
             }
         }
     }
